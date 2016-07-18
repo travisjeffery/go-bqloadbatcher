@@ -6,6 +6,7 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"os"
+	"path"
 	"strings"
 	"sync"
 )
@@ -26,7 +27,11 @@ type file struct {
 }
 
 func newFile(name string) (*file, error) {
-	names := strings.Split(name, "-")
+	dir := path.Dir(name)
+	base := path.Base(name)
+	names := strings.Split(base, "-")
+
+	os.MkdirAll(dir, 0766)
 
 	f, err := os.OpenFile(name, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0766)
 	if err != nil {

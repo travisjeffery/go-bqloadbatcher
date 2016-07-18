@@ -3,6 +3,7 @@ package bqloadbatcher
 import (
 	"encoding/json"
 	"fmt"
+	"path"
 	"time"
 
 	"code.google.com/p/goauth2/oauth/jwt"
@@ -37,10 +38,10 @@ type Options struct {
 	ProjectID string
 
 	// The duration of time that rows should be batched.
-	WindowDuration time.Duration
+	BatchDuration time.Duration
 
 	// Where to store the files that BQ batches the rows.
-	FileDir string
+	BatchDir string
 
 	// The PEM to authenticate with BQ.
 	PEM []byte
@@ -91,7 +92,7 @@ func New(opts *Options) (*Loader, error) {
 		return nil, err
 	}
 
-	ticker := time.NewTicker(opts.WindowDuration)
+	ticker := time.NewTicker(opts.BatchDuration)
 
 	l := &Loader{
 		Options:   opts,
@@ -268,9 +269,10 @@ func (l *Loader) write(r Row) error {
 }
 
 func (bq *Loader) prefix() int64 {
-	return time.Now().Truncate(bq.WindowDuration).Unix()
+	return time.Now().Truncate(bq.BatchDuration).Unix()
 }
 
 func (bq *Loader) name(r Row) string {
-	return fmt.Sprintf("%d-%s-%s", bq.prefix(), r.DatasetID(), r.TableID())
+	filepath := fmt.Sprintf("%d-%s-%s", bq.prefix(), r.DatasetID(), r.TableID())
+	return path.Join(bq.BatchDir, filepath)
 }
