@@ -17,6 +17,7 @@ type Row interface {
 	Data() *json.RawMessage
 }
 
+// Error wrap information regarding unsuccessful loads.
 type Error struct {
 	Name     string
 	Err      error
