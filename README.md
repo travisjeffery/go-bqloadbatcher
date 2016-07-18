@@ -21,7 +21,7 @@ loader.Input() <- row{
 }
 ```
 
-[GoDocs](https://godoc.org/github.com/travisjeffery/go-bqloadbatcher). 
+[GoDocs](https://godoc.org/github.com/travisjeffery/go-bqloadbatcher/bqloadbatcher). 
 
 ## Author
 
