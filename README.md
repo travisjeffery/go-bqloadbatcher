@@ -5,7 +5,7 @@ A BigQuery client to batch and load data with Go (Golang).
 ## Example
 
 ``` go
-loader, err := New(&Options{
+loader, err := bqloadbatcher.New(&Options{
 	ProjectID:     os.Getenv("PROJECT_ID"),
 	Email:         os.Getenv("EMAIL"),
 	PEM:           []byte(os.Getenv("PEM")),
